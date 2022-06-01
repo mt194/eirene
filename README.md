@@ -47,6 +47,7 @@ git clone https://github.com/TshiSelle/eirene.git
 ## .env file format :
 
 ```
+#./backend/.env
 
 PORT = 8080
 
@@ -56,11 +57,17 @@ MONGO_CONNECTION_URL = 'yourmongodburi'
 
 JWT_SECRET = 'securekey'
 
-LOOM_EMAIL_PASSWORD = 'emailpass'
+EMAIL = 'anyemail'
+
+EMAIL_PASSWORD = 'emailpass'
+
+CONTACT_MAIL = "supportemail"
 
 CLOUDINARY_URL = 'thisissecret'
 
 NODE_ENV = 'production' or 'development'
+
+LIVE_URL = "hostedlink"
 
 ```
 

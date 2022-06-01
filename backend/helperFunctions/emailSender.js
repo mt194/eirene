@@ -1,17 +1,21 @@
 const nodemailer = require("nodemailer");
-
+const dotenv = require('dotenv');
+dotenv.config();
 //*************** Email transfer functions ******************
-const CLIENT_URL = process.env.NODE_ENV == "development" ? `http://localhost:${process.env.CLIENT_PORT}` : "https://eirene1.herokuapp.com";
+const CLIENT_URL = process.env.NODE_ENV == "development" ? `http://localhost:${process.env.CLIENT_PORT}` : process.env.LIVE_URL;
+const email = process.env.EMAIL;
+const pass = process.env.EMAIL_PASSWORD;
+const contactEmail = process.env.CONTACT_MAIL
 
 var Transport = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "loom.senior@gmail.com",
-    pass: process.env.LOOM_EMAIL_PASSWORD,
+    user: email,
+    pass: pass,
   },
 });
 function sendEmailVerification(username, email, emailVerificationToken) {
-  let sender = "Eirene <loom.senior@gmail.com>";
+  let sender = `Eirene <${email}>`;
   var mailOptions = {
     from: sender,
     to: email,
@@ -54,7 +58,7 @@ function sendEmailVerification(username, email, emailVerificationToken) {
 }
 
 function sendEmailResetPass(email, username, passResetToken) {
-  let sender = "Eirene <loom.senior@gmail.com>";
+  let sender = `Eirene <${email}>`;
   var mailOptions = {
     from: sender,
     to: email,
@@ -97,7 +101,7 @@ function sendEmailSupport(dbSender, message) {
   let sender = dbSender.username ? `${dbSender.username} <${dbSender.email}>` : `<${dbSender.email}>`;
   var mailOptions = {
     from: sender,
-    to: "eireneContactUs@gmail.com",
+    to: contactEmail,
     subject: `Support message from ${dbSender.fname} ${dbSender.lname}`,
     text: message,
   };
@@ -114,7 +118,7 @@ function sendEmailSupport(dbSender, message) {
 
 function sendDeactivationEmail(dbUser) {
   const { email, deactivationDate, username } = dbUser;
-  let sender = "Eirene <loom.senior@gmail.com>";
+  let sender = `Eirene <${email}>`;
   var mailOptions = {
     from: sender,
     to: email,
