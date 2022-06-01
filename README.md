@@ -9,7 +9,7 @@
 ## Installation :
 
 ```
-git clone https://github.com/TshiSelle/eirene.git
+git clone https://github.com/mt194/eirene.git
 ```
 
 
