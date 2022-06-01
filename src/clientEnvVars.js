@@ -1,5 +1,6 @@
 const globalVars = {
-	NODE_ENV:  'production'
+	NODE_ENV:  'production',
+	LIVE_URL: 'hostedlink',
 };
 
 

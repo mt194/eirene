@@ -1,17 +1,14 @@
-import axios from "axios";
-import globalVars from "../clientEnvVars";
+import axios from 'axios';
+import globalVars from '../clientEnvVars';
 
-const host =
-  globalVars.NODE_ENV == "development"
-    ? "http://localhost:8080"
-    : "https://eireneserver.herokuapp.com";
+const host = globalVars.NODE_ENV == 'development' ? 'http://localhost:8080' : globalVars.LIVE_URL;
 
 function PostAxiosCall(endpoint, data, headers) {
   if (!data) data = {};
   if (!headers) headers = {};
 
   return axios({
-    method: "post",
+    method: 'post',
     url: `${host}${endpoint}`,
     data: data,
     headers: headers,
@@ -21,7 +18,7 @@ function PostAxiosCall(endpoint, data, headers) {
 function GetAxiosCall(endpoint, headers) {
   if (!headers) headers = {};
   return axios({
-    method: "get",
+    method: 'get',
     url: `${host}${endpoint}`,
     headers: headers,
   });
@@ -32,7 +29,7 @@ function PatchAxiosCall(endpoint, data, headers) {
   if (!headers) headers = {};
 
   return axios({
-    method: "patch",
+    method: 'patch',
     url: `${host}${endpoint}`,
     data: data,
     headers: headers,
@@ -44,22 +41,14 @@ function DeleteAxiosCall(endpoint, data, headers) {
   if (!headers) headers = {};
 
   return axios({
-    method: "delete",
+    method: 'delete',
     url: `${host}${endpoint}`,
     data: data,
     headers: headers,
   });
 }
 
-export function SignUpApiCall(
-  username,
-  email,
-  firstName,
-  lastName,
-  password,
-  confirmPassword,
-  gender
-) {
+export function SignUpApiCall(username, email, firstName, lastName, password, confirmPassword, gender) {
   const data = JSON.stringify({
     username: username,
     email: email,
@@ -70,8 +59,8 @@ export function SignUpApiCall(
     gender: gender,
   });
 
-  return PostAxiosCall("/register", data, {
-    "Content-Type": "application/json",
+  return PostAxiosCall('/register', data, {
+    'Content-Type': 'application/json',
   });
 }
 
@@ -81,8 +70,8 @@ export function LoginApiCall(username, password) {
     password: password,
   });
 
-  return PostAxiosCall("/account/login", data, {
-    "Content-Type": "application/json",
+  return PostAxiosCall('/account/login', data, {
+    'Content-Type': 'application/json',
   });
 }
 
@@ -91,23 +80,18 @@ export function SendEmail(email) {
     email: email,
   });
 
-  return PostAxiosCall("/account/forgotPass", data, {
-    "Content-Type": "application/json",
+  return PostAxiosCall('/account/forgotPass', data, {
+    'Content-Type': 'application/json',
   });
 }
 
-export function PasswordResetWithToken(
-  username,
-  token,
-  password,
-  confirmPassword
-) {
+export function PasswordResetWithToken(username, token, password, confirmPassword) {
   const data = JSON.stringify({
     newPassword: password,
     confirmPassword: confirmPassword,
   });
   return PostAxiosCall(`/account/resetPass/${username}/${token}`, data, {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   });
 }
 
@@ -115,41 +99,26 @@ export function IsEmailTokenValid(username, passResetToken) {
   return GetAxiosCall(`/account/resetPass/${username}/${passResetToken}`);
 }
 
-export function ChangeUserPass(
-  authToken,
-  oldPassword,
-  newPassword,
-  confirmPassword
-) {
+export function ChangeUserPass(authToken, oldPassword, newPassword, confirmPassword) {
   //for logged in user
   const data = JSON.stringify({
     oldPassword,
     newPassword,
     confirmPassword,
   });
-  return PostAxiosCall("/account/changePass", data, {
-    "x-access-token": authToken,
+  return PostAxiosCall('/account/changePass', data, {
+    'x-access-token': authToken,
   });
 }
 
-export function FilterTherapists(
-  query,
-  therapistTitle,
-  gender,
-  degree,
-  minYOE,
-  maxYOE,
-  pageNumber
-) {
-  let title = therapistTitle ? `&title=${therapistTitle}` : ""; //therapist job title (string-anything)
-  let tgender = gender ? `&gender=${gender}` : ""; // 'female'/'male'
-  let tdegree = degree ? `&degree=${degree}` : ""; // 'Phd' / 'Masters'
-  let MinyearsOfExp = minYOE ? `&minYOE=${minYOE}` : "&minYOE=0";
-  let MaxyearsOfExp = maxYOE ? `&maxYOE=${maxYOE}` : "";
-  let pageNum = pageNumber ? `&pageNum=${pageNumber}` : ""; //number (preferably between 1-maxPageNum)
-  return GetAxiosCall(
-    `/search?searchString=${query}${title}${tgender}${tdegree}${MinyearsOfExp}${MaxyearsOfExp}${pageNum}`
-  );
+export function FilterTherapists(query, therapistTitle, gender, degree, minYOE, maxYOE, pageNumber) {
+  let title = therapistTitle ? `&title=${therapistTitle}` : ''; //therapist job title (string-anything)
+  let tgender = gender ? `&gender=${gender}` : ''; // 'female'/'male'
+  let tdegree = degree ? `&degree=${degree}` : ''; // 'Phd' / 'Masters'
+  let MinyearsOfExp = minYOE ? `&minYOE=${minYOE}` : '&minYOE=0';
+  let MaxyearsOfExp = maxYOE ? `&maxYOE=${maxYOE}` : '';
+  let pageNum = pageNumber ? `&pageNum=${pageNumber}` : ''; //number (preferably between 1-maxPageNum)
+  return GetAxiosCall(`/search?searchString=${query}${title}${tgender}${tdegree}${MinyearsOfExp}${MaxyearsOfExp}${pageNum}`);
 }
 
 export function GetFilteredTherapist(id) {
@@ -161,11 +130,11 @@ export function IsVerificationTokenValid(username, emailVerificationToken) {
 }
 
 export function IsUserTokenValid(authToken) {
-  return GetAxiosCall("/verifyToken", { "x-access-token": authToken });
+  return GetAxiosCall('/verifyToken', { 'x-access-token': authToken });
 }
 
 export function GetUserInfo(authToken) {
-  return GetAxiosCall("/user-info", { "x-access-token": authToken });
+  return GetAxiosCall('/user-info', { 'x-access-token': authToken });
 }
 
 export function ChangeName(fname, lname, authToken) {
@@ -173,36 +142,28 @@ export function ChangeName(fname, lname, authToken) {
     fname: fname,
     lname: lname,
   };
-  return PatchAxiosCall("/profile/editName", data, {
-    "x-access-token": authToken,
+  return PatchAxiosCall('/profile/editName', data, {
+    'x-access-token': authToken,
   });
 }
 
 export function DeactivateAccount(authToken) {
-  return PostAxiosCall(
-    "/account/deactivate",
-    {},
-    { "x-access-token": authToken }
-  );
+  return PostAxiosCall('/account/deactivate', {}, { 'x-access-token': authToken });
 }
 
 export function ReactivateAccount(authToken) {
-  return PostAxiosCall(
-    "/account/undeactivate",
-    {},
-    { "x-access-token": authToken }
-  );
+  return PostAxiosCall('/account/undeactivate', {}, { 'x-access-token': authToken });
 }
 
 export function CreateJournal(authToken, title, body) {
   const data = { title, body };
-  return PostAxiosCall("/journal/create", data, {
-    "x-access-token": authToken,
+  return PostAxiosCall('/journal/create', data, {
+    'x-access-token': authToken,
   });
 }
 
 export function GetUserJournals(authToken) {
-  return GetAxiosCall("/journal/read", { "x-access-token": authToken });
+  return GetAxiosCall('/journal/read', { 'x-access-token': authToken });
 }
 
 export function UpdateJournal(authToken, journalID, newTitle, newBody) {
@@ -212,16 +173,16 @@ export function UpdateJournal(authToken, journalID, newTitle, newBody) {
     body: newBody,
   };
 
-  return PatchAxiosCall("/journal/update", data, {
-    "x-access-token": authToken,
+  return PatchAxiosCall('/journal/update', data, {
+    'x-access-token': authToken,
   });
 }
 
 export function DeleteJournal(journalID, authToken) {
   const data = { journalID };
 
-  return DeleteAxiosCall("/journal/delete", data, {
-    "x-access-token": authToken,
+  return DeleteAxiosCall('/journal/delete', data, {
+    'x-access-token': authToken,
   });
 }
 
@@ -231,7 +192,7 @@ export function ContactSupport(authToken, supportMessage) {
     supportMessage,
   };
 
-  return PostAxiosCall("/contact/user", data, { "x-access-token": authToken });
+  return PostAxiosCall('/contact/user', data, { 'x-access-token': authToken });
 }
 
 export function ContactSupportExternal(fname, lname, email, supportMessage) {
@@ -242,51 +203,34 @@ export function ContactSupportExternal(fname, lname, email, supportMessage) {
     supportMessage: supportMessage,
   });
 
-  return PostAxiosCall("/contact/external", data, {
-    "Content-Type": "application/json",
+  return PostAxiosCall('/contact/external', data, {
+    'Content-Type': 'application/json',
   });
 }
 
-export function CreateUserAppointment(
-  authToken,
-  title,
-  description,
-  date,
-  repeat
-) {
+export function CreateUserAppointment(authToken, title, description, date, repeat) {
   const data = JSON.stringify({
     title,
     description,
     date,
     repeat,
   });
-  return PostAxiosCall("/calendar/create", data, {
-    "x-access-token": authToken,
+  return PostAxiosCall('/calendar/create', data, {
+    'x-access-token': authToken,
   });
 }
 
 export function GetUserAppointments(authToken) {
-  return GetAxiosCall("/calendar/getUserAppointments", {
-    "x-access-token": authToken,
+  return GetAxiosCall('/calendar/getUserAppointments', {
+    'x-access-token': authToken,
   });
 }
 
 export function DeleteUserAppointment(authToken, eventID) {
-  return DeleteAxiosCall(
-    `/calendar/deleteAppointment/${eventID}`,
-    {},
-    { "x-access-token": authToken }
-  );
+  return DeleteAxiosCall(`/calendar/deleteAppointment/${eventID}`, {}, { 'x-access-token': authToken });
 }
 
-export function ModifyUserAppointment(
-  authToken,
-  eventID,
-  title,
-  description,
-  date,
-  repeat
-) {
+export function ModifyUserAppointment(authToken, eventID, title, description, date, repeat) {
   const data = JSON.stringify({
     title,
     description,
@@ -295,43 +239,37 @@ export function ModifyUserAppointment(
   });
 
   return PatchAxiosCall(`/calendar/modify/${eventID}`, data, {
-    "x-access-token": authToken,
+    'x-access-token': authToken,
   });
 }
 
 export function UploadProfilePicture(file, authToken) {
   if (!file || file.size <= 0) {
-    console.log("File is empty");
+    console.log('File is empty');
     return;
   }
   const formData = new FormData();
-  formData.append("File", file);
-  console.log("sending to server");
-  return PostAxiosCall("/profile/setProfilePic", formData, {
-    "Content-Type": "multipart/form-data",
-    "x-access-token": authToken,
+  formData.append('File', file);
+  console.log('sending to server');
+  return PostAxiosCall('/profile/setProfilePic', formData, {
+    'Content-Type': 'multipart/form-data',
+    'x-access-token': authToken,
   });
 }
 
 export function GetUserPicture(authToken) {
-  return GetAxiosCall("/profile/getProfilePic", {
-    "x-access-token": authToken,
+  return GetAxiosCall('/profile/getProfilePic', {
+    'x-access-token': authToken,
   });
 }
 
 export function RemoveUserPicture(authToken) {
-  return DeleteAxiosCall("/profile/removeProfilePic", {
-    "x-access-token": authToken,
+  return DeleteAxiosCall('/profile/removeProfilePic', {
+    'x-access-token': authToken,
   });
 }
 
-export function CreateTherapistAppointment(
-  id,
-  title,
-  description,
-  date,
-  repeat
-) {
+export function CreateTherapistAppointment(id, title, description, date, repeat) {
   const data = JSON.stringify({
     id,
     title,
@@ -339,30 +277,17 @@ export function CreateTherapistAppointment(
     date,
     repeat,
   });
-  return PostAxiosCall("/calendar/therapist/create", data);
+  return PostAxiosCall('/calendar/therapist/create', data);
 }
 
 export function GetTherapistAppointments(therapistID) {
-  return GetAxiosCall(
-    `/calendar/therapist/getTherapistAppointments/${therapistID}`
-  );
+  return GetAxiosCall(`/calendar/therapist/getTherapistAppointments/${therapistID}`);
 }
 
 export function DeleteTherapistAppointment(therapistID, eventID) {
-  return DeleteAxiosCall(
-    `/calendar/therapist/${therapistID}/deleteAppointment/${eventID}`,
-    {},
-    { "x-access-token": authToken }
-  );
+  return DeleteAxiosCall(`/calendar/therapist/${therapistID}/deleteAppointment/${eventID}`, {}, { 'x-access-token': authToken });
 }
-export function ModifyTherapistAppointment(
-  therapistID,
-  eventID,
-  title,
-  description,
-  date,
-  repeat
-) {
+export function ModifyTherapistAppointment(therapistID, eventID, title, description, date, repeat) {
   const data = JSON.stringify({
     id: therapistID,
     title,
