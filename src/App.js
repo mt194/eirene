@@ -1,29 +1,29 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignUpPage from "./components/Profile/SignUp/SignUpPage";
-import HomePage from "./components/HomePage/HomePage";
-import LoginPage from "./components/Profile/SignIn/LoginPage";
-import ProfilePage from "./components/Profile/UserProfile/ProfilePage";
-import ForgotPasswordForm from "./components/Profile/SignIn/forgot/ForgotPasswordForm";
-import FullPageSpinner from "./components/spinner/FullPageSpinner";
-import Journal from "./components/Journal/Journal";
-import ForgotPasswordResetForm from "./components/Profile/SignIn/forgot/ForgotPasswordResetForm";
-import SearchTherapists from "./components/Therapists/SearchTherapists";
-import TherapistDescription from "./components/Therapists/TherapistDescription";
-import { AuthProvider } from "./context/AuthContext";
-import NavBar from "./components/HomePage/NavBar";
-import SiteFooter from "./components/HomePage/Footer";
-import { JournalProvider } from "./context/JournalContext";
-import VerifyAccount from "./components/Profile/SignUp/verify/VerifyAccount";
-import { UserProvider } from "./context/UserContext";
-import { CalendarProvider } from "./context/CalendarContext";
-import MediaPlayer from "./components/MediaPlayer/MediaPlayer";
-import { CloudinaryContext } from "cloudinary-react";
-import ContactUsRoute from "./components/ContactUs/ContactUsRoute";
-import NotFoundRoute from "./components/NotFound/NotFoundRoute";
-import Footer from "./components/AboutUs/AboutUs";
-import AboutUs from "./components/AboutUs/AboutUs";
-import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUpPage from './components/Profile/SignUp/SignUpPage';
+import HomePage from './components/HomePage/HomePage';
+import LoginPage from './components/Profile/SignIn/LoginPage';
+import ProfilePage from './components/Profile/UserProfile/ProfilePage';
+import ForgotPasswordForm from './components/Profile/SignIn/forgot/ForgotPasswordForm';
+import FullPageSpinner from './components/spinner/FullPageSpinner';
+import Journal from './components/Journal/Journal';
+import ForgotPasswordResetForm from './components/Profile/SignIn/forgot/ForgotPasswordResetForm';
+import SearchTherapists from './components/Therapists/SearchTherapists';
+import TherapistDescription from './components/Therapists/TherapistDescription';
+import { AuthProvider } from './context/AuthContext';
+import NavBar from './components/HomePage/NavBar';
+import SiteFooter from './components/HomePage/Footer';
+import { JournalProvider } from './context/JournalContext';
+import VerifyAccount from './components/Profile/SignUp/verify/VerifyAccount';
+import { UserProvider } from './context/UserContext';
+import { CalendarProvider } from './context/CalendarContext';
+import MediaPlayer from './components/MediaPlayer/MediaPlayer';
+import { CloudinaryContext } from 'cloudinary-react';
+import ContactUsRoute from './components/ContactUs/ContactUsRoute';
+import NotFoundRoute from './components/NotFound/NotFoundRoute';
+import Footer from './components/AboutUs/AboutUs';
+import AboutUs from './components/AboutUs/AboutUs';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 const App = () => {
   return (
@@ -34,9 +34,9 @@ const App = () => {
             <JournalProvider>
               <Suspense fallback={<FullPageSpinner />}>
                 <Suspense fallback={<FullPageSpinner />}>
-                  <Router>
-                    <NavBar />
-                    <MediaPlayer>
+                  <MediaPlayer>
+                    <Router>
+                      <NavBar />
                       <ScrollToTop>
                         <Routes>
                           {/* Every page we create needs to have a route so we can navigate to it,
@@ -53,12 +53,12 @@ const App = () => {
                           <Route path="/Journal" element={<Journal />} />
                           <Route path="/about" element={<AboutUs />} />
                           <Route path="/contact" element={<ContactUsRoute />} />
-                          <Route path={"/*" || "/404"} element={<NotFoundRoute />} />
+                          <Route path={'/*' || '/404'} element={<NotFoundRoute />} />
                         </Routes>
                       </ScrollToTop>
-                    </MediaPlayer>
-                    <SiteFooter />
-                  </Router>
+                      <SiteFooter />
+                    </Router>
+                  </MediaPlayer>
                 </Suspense>
               </Suspense>
             </JournalProvider>
